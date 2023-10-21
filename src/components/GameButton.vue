@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const props = defineProps<{
   game: string;
-  rules: boolean
+  rules?: boolean
 }>()
 let link = "/" + props.game + (props.rules ? "/rules" : "")
 let text = props.rules?"Rules":"Play"
