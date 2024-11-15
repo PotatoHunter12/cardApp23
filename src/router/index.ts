@@ -10,55 +10,21 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/tarok',
+      path: '/game',
       name: 'tarok',
       component: () => import('../views/TarokGameView.vue')
     },
     {
-      path: '/tarok/rules',
+      path: '/rules',
       name: 'tarokRules',
       component: () => import('../views/TarokRulesView.vue')
     },
     {
-      path: '/fr-tarok',
-      name: 'fr-tarok',
-      component: () => import('../views/FrTarokGameView.vue')
+      path: '/add',
+      name: 'AddElement',
+      component: () => import('../views/AddElement.vue')
     },
-    {
-      path: '/fr-tarok/rules',
-      name: 'fr-tarokRules',
-      component: () => import('../views/FrTarokRulesView.vue')
-    },
-    {
-      path: '/poker',
-      name: 'poker',
-      component: () => import('../views/PokerGameView.vue')
-    },
-    {
-      path: '/poker/rules',
-      name: 'pokerRules',
-      component: () => import('../views/PokerRulesView.vue')
-    },
-    {
-      path: '/rummy',
-      name: 'rummy',
-      component: () => import('../views/RummyGameView.vue')
-    },
-    {
-      path: '/rummy/rules',
-      name: 'rummyRules',
-      component: () => import('../views/RummyRulesView.vue')
-    },
-    {
-      path: '/lustik',
-      name: 'lustik',
-      component: () => import('../views/LustikGameView.vue')
-    },
-    {
-      path: '/lustik/rules',
-      name: 'lustikRules',
-      component: () => import('../views/LustikRulesView.vue')
-    }
+    
   ]
 })
 

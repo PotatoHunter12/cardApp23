@@ -1,56 +1,71 @@
-<script setup lang="ts">
-  import { RouterLink } from 'vue-router'
-  import GameButton from '../components/GameButton.vue'
-  import { createApp, createElementBlock } from 'vue';
-
-</script>
-
+<!-- ScrollableGrid.vue -->
 <template>
-  <main>
-    <h1>CardApp</h1>
-    <h2>card game score tracker and calculator</h2>
-    <div class="btn tarok" @click="click('tarok')">Tarok</div>
-    <div class="btn fr-tarok" @click="click('fr-tarok')">French Tarok</div>
-    <div class="btn poker" @click="click('poker')">Poker</div>
-    <div class="btn rummy" @click="click('rummy')">Rummy</div>
-    <div class="btn lustik" @click="click('lustik')">Lustik</div>
-  </main>
+  <div>
+    <h1>Games</h1>
+    <div class="grid-container">
+      <div class="grid">
+        <div v-for="element in elements" :key="element._id" class="card">
+          <div class="names" v-for="item in element.items" :key="item.name">
+            <p>{{ item.name }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="btn" @click="navigateToAdd">Start New Game</button>
+  </div>
 </template>
 
-<script lang="ts">
-
-function click(game: string) {
-  let lmn: Element = document.body.getElementsByClassName(game)[0]
-
-  const sp = document.createElement('span')
-  lmn.innerHTML = ""
-  
-  createApp(GameButton, { game: game, rules: false }).mount(lmn)
-  lmn.innerHTML += " | "
-  createApp(GameButton, { game: game, rules: true }).mount(sp)
-  lmn.append(sp)
-  
+<script>
+import axios from 'axios';
+export default {
+  data() {
+    return {
+      elements: []
+    };
+  },
+  created() {
+    this.fetchElements();
+  },
+  methods: {
+    async fetchElements() {
+      try {
+        const response = await axios.get('http://localhost:3000/api/elements');
+        this.elements = response.data;
+      } catch (error) {
+        console.error("Error fetching elements:", error);
+      }
+    },
+    navigateToAdd() {
+      this.$router.push({ name: 'AddElement' });
+    }
+  }
 }
 </script>
 
 <style scoped>
-main {
-  text-align: center;
+.names{
+  float: left;
+  padding-right: 20pt;
 }
-h1 {
-  font-size: 5.5em;
-  color:rgb(250, 106, 106);
-  margin-top: 1.5em;
-  margin-bottom: 0;
+.grid-container {
+  height: 700px;
+  overflow-y: auto;
+}
+.grid-container::-webkit-scrollbar {
+  display: none;
 }
 
-h2 {
-  font-size: 1.15em;
-  margin-top: 0.2em;
-  margin-bottom: 4em;
+.grid {
+  display: grid;
+  gap: 10px;
+  
 }
-a {
-  text-decoration: none;
-  color: white;
+
+.card {
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  justify-content: space-evenly;
 }
 </style>

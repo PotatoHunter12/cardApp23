@@ -4,21 +4,23 @@
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
-
   font-weight: normal;
 }
 
 .btn {
   text-decoration: none;
-  margin: 10pt auto;
+  font-family: 'Comic Sans MS';
+  font-size: 15pt;
+
+  margin: auto;
   background-color:rgb(250, 106, 106);
   color: white;
   transition: 0.4s;
-  padding: 10pt;
-  width: 70%;
+  padding: 10pt 30pt;
+  border: none;
 }
 
-@media (min-width: 1024px) {
+/* @media (min-width: 1024px) {
   body {
     display: flex;
     place-items: center;
@@ -29,4 +31,4 @@
     grid-template-columns: 1fr 1fr;
     padding: 0 2rem;
   }
-}
+} */
