@@ -1,14 +1,14 @@
 <!-- AddElement.vue -->
 <template>
     <div>
-      <h1>Add New Element</h1>
+      <h1>Start New Game</h1>
       <form @submit.prevent="submitElement">
         <div v-for="(item, index) in items" :key="index">
-          <label>Item {{ index + 1 }}:</label>
-          <input v-model="item.name" type="text" placeholder="Enter string" required />
+          <label>Player {{ index + 1 }}:</label>
+          <input v-model="item.name" type="text" placeholder="Enter name" required />
         </div>
-        <button type="button" @click="addItem" v-if="items.length < 4">Add Another Item</button>
-        <button type="submit">Save Element</button>
+        <button type="button" @click="addItem" v-if="items.length < 4">Add Player</button>
+        <button type="submit">Save</button>
       </form>
     </div>
   </template>
