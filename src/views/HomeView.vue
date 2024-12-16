@@ -1,71 +1,30 @@
 <!-- ScrollableGrid.vue -->
 <template>
   <div>
-    <h1>Games</h1>
-    <div class="grid-container">
-      <div class="grid">
-        <div v-for="element in elements" :key="element._id" class="card">
-          <div class="names" v-for="item in element.items" :key="item.name">
-            <p>{{ item.name }}</p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <button class="btn" @click="navigateToAdd">Start New Game</button>
+    <h1>Card App</h1>
+    <button class="btn" @click="navigateToGameSel">Play</button>
+    <button class="btn" @click="navigateToProfile">Profile</button>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
 export default {
-  data() {
-    return {
-      elements: []
-    };
-  },
-  created() {
-    this.fetchElements();
-  },
   methods: {
-    async fetchElements() {
-      try {
-        const response = await axios.get('http://localhost:3000/api/elements');
-        this.elements = response.data;
-      } catch (error) {
-        console.error("Error fetching elements:", error);
-      }
+    navigateToProfile() {
+      this.$router.push({name: 'profile'});
     },
-    navigateToAdd() {
-      this.$router.push({ name: 'AddElement' });
+    navigateToGameSel() {
+      this.$router.push({name: 'gameSelect'});
     }
   }
 }
+
 </script>
 
 <style scoped>
-.names{
-  float: left;
-  padding-right: 20pt;
-}
-.grid-container {
-  height: 700px;
-  overflow-y: auto;
-}
-.grid-container::-webkit-scrollbar {
-  display: none;
-}
-
-.grid {
-  display: grid;
-  gap: 10px;
-  
-}
-
-.card {
-  border: 1px solid #ccc;
-  padding: 10px;
-  border-radius: 5px;
-  background-color: #f9f9f9;
-  justify-content: space-evenly;
+h1{
+  font-size: 4em;
+  margin: 40% auto 60%;
+  text-align: center;
 }
 </style>

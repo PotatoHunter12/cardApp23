@@ -10,9 +10,21 @@ const router = createRouter({
       component: HomeView
     },
     {
+      path: '/gamesel',
+      name: 'gameSelect',
+      component: () => import('../views/GameSelect.vue'),
+      props: true
+    },
+    {
+      path: '/profile',
+      name: 'profile',
+      component: () => import('../views/ProfileView.vue')
+    },
+    {
       path: '/game',
-      name: 'tarok',
-      component: () => import('../views/TarokGameView.vue')
+      name: 'gameTable',
+      component: () => import('../views/TarokGameView.vue'),
+      props: true
     },
     {
       path: '/rules',

@@ -1,48 +1,36 @@
-<script setup lang="ts">
+<script>
+export default {
+  data() {
+    return {
+      items: [], // Initialize empty
+    };
+  },
+  created() {
+    const items = this.$route.query.items;
+    if (items) {
+      this.items = JSON.parse(items); // Parse the JSON string
+      console.log(this.items);
+      
+    }
+  },
+};
 </script>
 
 <template>
   <main>
     <table>
       <tr>
-        <td>
-          ime 1
-        </td>
-        <td>
-          ime 2
-        </td>
-        <td>
-          ime 3
-        </td>
-        <td>
-          ime 4
+        <td v-for="item in items" :key="item.name">
+          {{ item.name }}
         </td>
       </tr>
       <tr class="rad">
-        <td>
-          o
-        </td>
-        <td>
-          o
-        </td>
-        <td>
-          o
-        </td>
-        <td>
+        <td v-for="item in items" :key="item.name">
           o
         </td>
       </tr>
       <tr>
-        <td>
-          0
-        </td>
-        <td>
-          0
-        </td>
-        <td>
-          0
-        </td>
-        <td>
+        <td v-for="item in items" :key="item.name">
           0
         </td>
       </tr>

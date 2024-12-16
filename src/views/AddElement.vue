@@ -9,6 +9,7 @@
         </div>
         <button type="button" @click="addItem" v-if="items.length < 4">Add Player</button>
         <button type="submit">Save</button>
+        <button class="btn" @click="back">Cancel</button>
       </form>
     </div>
   </template>
@@ -38,6 +39,9 @@
         } catch (error) {
           console.error('Error saving element:', error);
         }
+      },
+      back() {
+            this.$router.push({name: 'home'});
       }
     }
   }

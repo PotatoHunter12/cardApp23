@@ -12,7 +12,9 @@
   font-family: 'Comic Sans MS';
   font-size: 15pt;
 
-  margin: auto;
+  margin: 10pt auto;
+  width: 200pt;
+  display: block;
   background-color:rgb(250, 106, 106);
   color: white;
   transition: 0.4s;
