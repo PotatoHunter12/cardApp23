@@ -37,6 +37,7 @@
         }
   
         try {
+          console.log('Registering user:', this.username, this.password);
           // Make a POST request to the backend /register endpoint
           await api.post('/register', {
             username: this.username,

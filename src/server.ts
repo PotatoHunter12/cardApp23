@@ -1,5 +1,5 @@
 import express from 'express';
-import type { Request, Response, Application } from 'express';
+import type { Request, Response, Application, NextFunction } from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import path from 'path';
@@ -11,6 +11,11 @@ import authRoutes from './routes/auth.routes';
 
 const app: Application = express();
 const port = process.env.PORT || 3000;
+
+const asyncHandler = (fn: (req: Request, res: Response, next: express.NextFunction) => Promise<void>) => 
+  (req: Request, res: Response, next: express.NextFunction) => {
+    Promise.resolve(fn(req, res, next)).catch(next);
+  };
 
 connectToDatabase();
 
@@ -95,33 +100,37 @@ app.delete('/api/profiles/:id', async (req: Request, res: Response) => {
 });
 
 // Games API
+app.post(
+  '/api/profiles/:profileId/games',
+  async (req: Request<{ profileId: string }>, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const { profileId } = req.params;
 
-app.post('/api/profiles/:profileId/games', async (req: Request, res: Response) => {
-  try {
-    const { profileId } = req.params;
+      if (!mongoose.Types.ObjectId.isValid(profileId)) {
+        res.status(400).json({ message: 'Invalid profile ID' });
+        return;
+      }
 
-    // Validate profileId
-    if (!mongoose.Types.ObjectId.isValid(profileId)) {
-      return res.status(400).json({ message: 'Invalid profile ID' });
+      const profile = await Profile.findById(profileId);
+      if (!profile) {
+        res.status(404).json({ message: 'Profile not found' });
+        return;
+      }
+
+      const game = await Game.create({
+        ...req.body,
+        profile_id: new mongoose.Types.ObjectId(profileId),
+      });
+
+      profile.games.push(game._id);
+      await profile.save();
+
+      res.status(201).json(game);
+    } catch (err: any) {
+      next(err); // Forward the error to Express error-handling middleware
     }
-
-    const profile = await Profile.findById(profileId);
-    if (!profile) {
-      return res.status(404).json({ message: 'Profile not found' });
-    }
-
-    // Create the game
-    const game = await Game.create({ ...req.body, profile_id: new mongoose.Types.ObjectId(profileId) });
-
-    // Add the game's ObjectId to the profile's games array
-    profile.games.push(game._id);
-    await profile.save();
-
-    res.status(201).json(game);
-  } catch (err: any) {
-    res.status(500).json({ message: 'Error creating game', error: err.message });
   }
-});
+);
 
 
 ///test for game
@@ -159,6 +168,12 @@ app.use((err: Error, req: Request, res: Response, next: express.NextFunction) =>
   res.status(500).json({ message: 'Something went wrong!', error: err.message });
 });
 
+// SPA routing
+app.get('*', (req: Request, res: Response) => {
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+});
+
+
 // Test route
 app.post('/api/profiles/:profileId/games', (req: Request, res: Response) => {
   console.log(req.body, req.params.profileId);
@@ -168,7 +183,3 @@ app.post('/api/profiles/:profileId/games', (req: Request, res: Response) => {
 // Serve static files from the "dist" directory
 app.use(express.static(path.join(__dirname, 'dist')));
 
-// Handle SPA routing: redirect all non-API requests to index.html
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
-});

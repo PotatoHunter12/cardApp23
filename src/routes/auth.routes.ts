@@ -1,33 +1,36 @@
-import express from 'express';
-import { Router } from 'express';
-import type{ Request, Response } from 'express';
-import bcrypt from 'bcrypt';
+import express, {type Request,type Response } from 'express';
 import User from '../models/user.model';
 
-const router = Router();
+const router = express.Router();
 
-router.post('/register', async (req: any, res: any) => {
-  try {
-    const { username, password } = req.body;
+router.post(
+  '/register',
+  async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { username, password } = req.body;
 
-    if (!username || !password) {
-      return res.status(400).json({ message: 'Username and password are required.' });
+      // Validate input
+      if (!username || !password) {
+        res.status(400).json({ message: 'Username and password are required' });
+        return;
+      }
+
+      // Check if the user already exists
+      const existingUser = await User.findOne({ username });
+      if (existingUser) {
+        res.status(409).json({ message: 'User already exists' });
+        return;
+      }
+
+      // Create a new user
+      const newUser = new User({ username, password });
+      await newUser.save();
+
+      res.status(201).json({ message: 'User registered successfully' });
+    } catch (error: any) {
+      res.status(500).json({ message: 'Registration failed', error: error.message });
     }
-
-    const existingUser = await User.findOne({ username });
-    if (existingUser) {
-      return res.status(400).json({ message: 'Username already exists.' });
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({ username, password: hashedPassword });
-    await newUser.save();
-
-    res.status(201).json({ message: 'User registered successfully.', user: newUser });
-  } catch (error: any) {
-    res.status(500).json({ message: 'Error registering user.', error: error.message });
   }
-});
-
+);
 
 export default router;
