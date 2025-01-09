@@ -22,6 +22,21 @@
   border: none;
 }
 
+.btn2 {
+  text-decoration: none;
+  font-family: 'Comic Sans MS';
+  font-size: 15pt;
+
+  margin: 10pt auto;
+  width: 200pt;
+  display: block;
+  background-color: white;
+  color: rgb(250, 106, 106);
+  transition: 0.4s;
+  padding: 10pt 30pt;
+  border: none;
+}
+
 /* @media (min-width: 1024px) {
   body {
     display: flex;

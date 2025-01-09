@@ -6,8 +6,8 @@ import path from 'path';
 import Element from './models/Element';
 import connectToDatabase from './models/db.config';
 import Profile from './models/profile.model';
-import Game from './models/game.model';
 import authRoutes from './routes/auth.routes';
+import Game from './models/Games';
 
 const app: Application = express();
 const port = process.env.PORT || 3000;
@@ -47,6 +47,22 @@ app.post('/api/elements', async (req, res) => {
     res.status(201).json({ message: 'Element added successfully' });
   } catch (error) {
     res.status(500).json({ message: 'Failed to add element', error });
+  }
+});
+
+app.post('/api/end-round', async (req, res) => {
+  const { gameId, userId, roundNumber, score } = req.body;
+
+  if (!gameId || !userId || roundNumber === undefined || score === undefined) {
+    res.status(400).json({ message: 'All fields are required' });
+  }
+
+  try {
+    const newGame = new Game({ gameId, userId, roundNumber, score });
+    await newGame.save();
+    res.status(201).json({ message: 'Game data saved successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to save game data', error });
   }
 });
 
@@ -98,40 +114,6 @@ app.delete('/api/profiles/:id', async (req: Request, res: Response) => {
     res.status(500).json({ message: 'Error deleting profile', error: err.message });
   }
 });
-
-// Games API
-app.post(
-  '/api/profiles/:profileId/games',
-  async (req: Request<{ profileId: string }>, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      const { profileId } = req.params;
-
-      if (!mongoose.Types.ObjectId.isValid(profileId)) {
-        res.status(400).json({ message: 'Invalid profile ID' });
-        return;
-      }
-
-      const profile = await Profile.findById(profileId);
-      if (!profile) {
-        res.status(404).json({ message: 'Profile not found' });
-        return;
-      }
-
-      const game = await Game.create({
-        ...req.body,
-        profile_id: new mongoose.Types.ObjectId(profileId),
-      });
-
-      profile.games.push(game._id);
-      await profile.save();
-
-      res.status(201).json(game);
-    } catch (err: any) {
-      next(err); // Forward the error to Express error-handling middleware
-    }
-  }
-);
-
 
 ///test for game
 app.post('/test-game', async (req: Request, res: Response) => {

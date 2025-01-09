@@ -1,4 +1,5 @@
 <script>
+import NewRound from './NewRound.vue';
 export default {
   data() {
     return {
@@ -13,8 +14,12 @@ export default {
       
     }
   },
+  components: {
+    NewRound,
+  },
 };
 </script>
+
 
 <template>
   <main>
@@ -31,23 +36,33 @@ export default {
       </tr>
       <tr>
         <td v-for="item in items" :key="item.name">
-          0
+          {{ item.value }}
         </td>
       </tr>
     </table>
+    <NewRound class="nrnd" :players="items"></NewRound>
   </main>
 </template>
 
 <style>
-td {
-  border-bottom: 2pt black solid;
-  
-}
+  td {
+    border-bottom: 2pt black solid;
+    
+  }
   table {
     border-collapse: collapse;
     width: 100%;
     margin: 0;
     padding: 0;
 
+  }
+  .nrnd {
+    background-color: rgb(250, 106, 106);
+    padding: 10pt 20pt;
+    color: white;
+    position: absolute;
+    top: 20pt;
+    left: 12%;
+    right: 12%;
   }
 </style>
