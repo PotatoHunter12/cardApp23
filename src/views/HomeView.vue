@@ -1,6 +1,6 @@
 <template>
   <div class="home-container">
-    <img src="/deck-of-cards.png" alt="Tarok Logo" class="deck-of-cards" />
+    <img src="/deck-of-card.png" alt="Tarok Logo" class="deck-of-cards" />
     <h1 class="home-title">Card App</h1>
     <div class="button-group">
       <button class="btn btn-primary" @click="navigateToGameSel">Games</button>

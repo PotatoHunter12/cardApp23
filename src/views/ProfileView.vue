@@ -1,5 +1,5 @@
 <script>
-import api from '@/services/api';
+import axios from 'axios';
 
 export default {
   data() {
@@ -20,30 +20,25 @@ export default {
 
   methods: {
     async fetchProfiles() {
-      console.log('Fetching profiles...');
       try {
         const token = localStorage.getItem('token');
-        console.log('Token:', token);
-
-        const response = await api.get('/profiles', {
-          headers: { Authorization: `Bearer ${token}` },
+        const response = await axios.get('http://localhost:3000/api/users/profiles', {
+          headers: {
+            Authorization: token,
+          },
         });
-
-        console.log('Profiles response:', response.data);
-        this.profiles = response.data;
+        this.profile = response.data;
       } catch (error) {
-        console.error('Error fetching profiles:', error);
-        this.errorMessage = 'Failed to load profiles. Please log in again.';
-        this.$router.push('/login'); // Redirect to login if token is invalid
+        this.errorMessage = error.response?.data?.message || 'Failed to fetch profile.';
       }
     },
     async addProfile() {
       console.log('Adding profile...');
       try {
         const token = localStorage.getItem('token');
-        await api.post(
-          '/profiles',
-          { name: this.newProfileName },
+        await axios.post(
+          '/api/users',
+          { username: this.newProfileName },
           { headers: { Authorization: `Bearer ${token}` } }
         );
         console.log('Profile added successfully');
@@ -58,7 +53,7 @@ export default {
       console.log('Deleting profile:', profileId);
       try {
         const token = localStorage.getItem('token');
-        await api.delete(`/profiles/${profileId}`, {
+        await axios.delete(`api/users/${profileId}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         console.log('Profile deleted successfully');

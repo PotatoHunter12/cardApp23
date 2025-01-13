@@ -70,12 +70,22 @@
         <label>Counters:</label>
         <div v-for="counter in counters" :key="counter.id">
           <input
-            type="radio"
+            type="checkbox"
             :id="'counter-' + counter.id"
             :value="counter"
-            v-model="round.counter"
+            v-model="selectedCounter"
+            @click="handleSelection(counter)"
+            :checked="checkSelection(counter)"
           />
           <label :for="'counter-' + counter.id">{{ counter.name }}</label>
+          <div v-if="selectedCounter && selectedCounter.id === counter.id">
+            <label for="counter-player">Select Player:</label>
+            <select id="counter-player" v-model="counter.player">
+              <option v-for="player in players" :key="player.name" :value="player">
+                {{ player.name }}
+              </option>
+            </select>
+          </div>
         </div>
         <br>
         <div>
@@ -83,6 +93,10 @@
         </div>
         <br>
         <button type="submit" class="btn2">Submit</button>
+        <div class="back">
+          <a @click="{this.$emit('round-submitted');}">Back</a>
+        </div>
+        
       </form>
     </div>
   </template>
@@ -170,6 +184,15 @@
       round25() {
         this.round.points = Math.round(this.round.points / 5) * 5;
       },
+      handleSelection (item) {
+      this.selected = item
+      console.log(this.selected);
+      
+     },
+     checkSelection (item) {
+      console.log("aaa");
+      return item === this.selected
+     },
       async submitRound() {
         const roundData = {
           points: this.round.points,
@@ -182,7 +205,8 @@
           totalPoints: this.calculateTotal,
         };
         try {
-          await axios.post("/api/tarok/rounds", roundData);
+          // await axios.post("/api/tarok/rounds", roundData);
+          this.$emit('round-submitted');
           alert("Round submitted successfully!");
           this.resetForm();
         } catch (error) {
@@ -212,6 +236,14 @@
   }
   h1 {
     text-align: center;
+  }
+  .back {
+    text-align: center;
+    margin-bottom: 10pt;
+  }
+
+  .btn2{
+    margin-bottom: 5pt;
   }
   </style>
   

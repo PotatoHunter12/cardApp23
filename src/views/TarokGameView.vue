@@ -3,6 +3,7 @@ import NewRound from './NewRound.vue';
 export default {
   data() {
     return {
+      showNewRound: false,
       items: [], // Initialize empty
     };
   },
@@ -13,6 +14,11 @@ export default {
       console.log(this.items);
       
     }
+  },
+  methods: {
+    toggleNewRound() {
+      this.showNewRound = !this.showNewRound;
+    },
   },
   components: {
     NewRound,
@@ -40,7 +46,9 @@ export default {
         </td>
       </tr>
     </table>
-    <NewRound class="nrnd" :players="items"></NewRound>
+    <button class="btn" @click="toggleNewRound">Add Round</button>
+    <NewRound v-if="showNewRound" @round-submitted="toggleNewRound" class="nrnd" :players="items"></NewRound>
+  
   </main>
 </template>
 

@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import api from "@/services/api";
+import axios from 'axios';
 
 export default {
   data() {
@@ -44,12 +44,12 @@ export default {
   methods: {
     async login() {
       try {
-        const response = await api.post("/login", {
+        const response = await axios.post("http://localhost:3000/api/users/login", {
           username: this.username,
           password: this.password,
         });
         localStorage.setItem("token", response.data.token);
-        this.$router.push("/profile");
+        this.$router.push("/");
       } catch {
         this.errorMessage = "Invalid username or password.";
       }

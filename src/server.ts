@@ -8,6 +8,10 @@ import connectToDatabase from './models/db.config';
 import Profile from './models/profile.model';
 import authRoutes from './routes/auth.routes';
 import Game from './models/Games';
+import User from './models/user.model';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import './express.d.ts';
 
 const app: Application = express();
 const port = process.env.PORT || 3000;
@@ -17,7 +21,6 @@ const asyncHandler = (fn: (req: Request, res: Response, next: express.NextFuncti
     Promise.resolve(fn(req, res, next)).catch(next);
   };
 
-connectToDatabase();
 
 // MongoDB connection
 const mongoUri = 'mongodb://mongo:27017/games';
@@ -30,6 +33,16 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'dist')));
 
+const authenticateToken = (req: Request, res: Response, next: express.NextFunction) => {
+  const token = req.headers['authorization'];
+  if (!token) return res.status(401).json({ message: 'Access denied' });
+
+  jwt.verify(token, JWT_SECRET, (err, user) => {
+    if (err) return res.status(403).json({ message: 'Invalid token' });
+    req.user = user;
+    next();
+  });
+};
 // Routes
 app.use('/api', authRoutes);
 
@@ -66,6 +79,61 @@ app.post('/api/end-round', async (req, res) => {
   }
 });
 
+// Register endpoint
+app.post('/api/users/register', async (req, res) => {
+  const { username, password } = req.body;
+
+  if (!username || !password) {
+    res.status(400).json({ message: 'All fields are required' });
+  }
+
+  const existingUser = await User.findOne({ username });
+  if (existingUser) {
+    res.status(400).json({ message: 'Username already exists' });
+  }
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+  const newUser = new User({ username, password: hashedPassword });
+  await newUser.save();
+
+  res.status(201).json({ message: 'User registered successfully' });
+});
+
+const JWT_SECRET = 'your_jwt_secret_key';
+
+app.post('/api/users/login', async (req, res) => {
+  const { username, password } = req.body;
+
+  if (!username || !password) {
+    res.status(400).json({ message: 'All fields are required' });
+  }
+
+  const user = await User.findOne({ username });
+  if (!user) {
+    res.status(400).json({ message: 'Invalid username or password' });
+  }else{
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      res.status(400).json({ message: 'Invalid username or password' });
+    }
+
+    const token = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: '1h' });
+    res.json({ token });
+
+  }
+
+  
+});
+app.get('/api/users/profile', authenticateToken(req,res), async (req, res) => {
+  const user = await User.findById(req.user?req.user.userId:0).select('-password');
+  if (!user) {
+    res.status(404).json({ message: 'User not found' });
+  } else {
+    res.json(user);
+  }
+  
+});
+
 // GET route 
 app.get('/api/elements', async (req: Request, res: Response) => {
   try {
@@ -76,43 +144,7 @@ app.get('/api/elements', async (req: Request, res: Response) => {
   }
 });
 app.listen(port, () => {
-  console.log(import.meta.env.VITE_BACKEND_URL);
   console.log(`Server running at http://localhost:${port}`);
-});
-
-// Profiles API
-app.post('/api/profiles', async (req: Request, res: Response) => {
-  try {
-    const profile = await Profile.create(req.body);
-    res.status(201).json(profile);
-  } catch (err: any) {
-    res.status(500).json({ message: 'Error creating profile', error: err.message });
-  }
-});
-
-// Get all profiles
-app.get('/api/profiles', async (req: Request, res: Response) => {
-  try {
-    const profiles = await Profile.find();
-    res.json(profiles);
-  } catch (err: any) {
-    res.status(500).json({ message: 'Error fetching profiles', error: err.message });
-  }
-});
-
-// delite profile
-app.delete('/api/profiles/:id', async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    const deleted = await Profile.findByIdAndDelete(id);
-    if (deleted) {
-      res.status(200).json({ message: 'Profile deleted successfully' });
-    } else {
-      res.status(404).json({ message: 'Profile not found' });
-    }
-  } catch (err: any) {
-    res.status(500).json({ message: 'Error deleting profile', error: err.message });
-  }
 });
 
 ///test for game
