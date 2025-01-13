@@ -88,7 +88,7 @@ app.post('/api/users/register', async (req, res) => {
   res.status(201).json({ message: 'User registered successfully' });
 });
 
-const JWT_SECRET = 'your_jwt_secret_key';
+const JWT_SECRET = 'your_jwt_secret_key1';
 
 app.post('/api/users/login', async (req, res) => {
   const { username, password } = req.body;
@@ -126,6 +126,15 @@ app.get('/api/users/profiles', async (req, res) => {
   }
   
   
+});
+
+app.get('/api/users/get', async (req: Request, res: Response) => {
+  try {
+    const users = await User.find().select('-password');
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to fetch users', error });
+  }
 });
 
 // GET route 

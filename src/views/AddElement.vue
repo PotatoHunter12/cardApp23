@@ -2,14 +2,13 @@
   <div class="add-element-container">
     <h1>Start New Game</h1>
     <form class="add-element-form" @submit.prevent="submitElement">
-      <div v-for="(item, index) in items" :key="index" class="player-input">
-        <label>Player {{ index + 1 }}:</label>
-        <input
-          v-model="item.name"
-          type="text"
-          placeholder="Enter name"
-          required
-        />
+      <div v-for="i in this.playerNum" :key="i" class="player-input">
+        <label>Player {{ i }}:</label>
+        <select id="player" required>
+            <option v-for="player in this.players" :key="player.username">
+              {{ player.username }}
+            </option>
+          </select>
       </div>
       <div class="button-container">
         <button
@@ -37,12 +36,28 @@ export default {
         { name: "", value: 0 },
         { name: "", value: 0 },
       ],
+      players: [],
+      playerNum: 3,
     };
+  },
+  created() {
+    this.fetchUsers();
   },
   methods: {
     addItem() {
       if (this.items.length < 4) {
         this.items.push({ name: "", value: 0 });
+        this.playerNum = 4;
+      }
+    },
+    async fetchUsers() {
+      try {
+        const response = await axios.get('http://localhost:3000/api/users/get');
+        this.players = response.data;
+        console.log(this.players);
+        
+      } catch (error) {
+        this.errorMessage = error.response?.data?.message || 'Failed to fetch users.';
       }
     },
     async submitElement() {
