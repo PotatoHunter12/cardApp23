@@ -10,7 +10,7 @@ import authRoutes from './routes/auth.routes';
 import Game from './models/Games';
 import User from './models/user.model';
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+// import jwt from 'jsonwebtoken';
 import './express.d.ts';
 
 const app: Application = express();
@@ -37,11 +37,11 @@ const authenticateToken = (req: Request, res: Response, next: express.NextFuncti
   const token = req.headers['authorization'];
   if (!token) return res.status(401).json({ message: 'Access denied' });
 
-  jwt.verify(token, JWT_SECRET, (err, user) => {
-    if (err) return res.status(403).json({ message: 'Invalid token' });
-    req.user = user;
-    next();
-  });
+  // jwt.verify(token, JWT_SECRET, (err, user) => {
+  //   if (err) return res.status(403).json({ message: 'Invalid token' });
+  //   req.user = user;
+  //   next();
+  // });
 };
 // Routes
 app.use('/api', authRoutes);
@@ -117,22 +117,22 @@ app.post('/api/users/login', async (req, res) => {
       res.status(400).json({ message: 'Invalid username or password' });
     }
 
-    const token = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: '1h' });
-    res.json({ token });
+    // const token = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: '1h' });
+    // res.json({ token });
 
   }
 
   
 });
-app.get('/api/users/profile', authenticateToken(req,res), async (req, res) => {
-  const user = await User.findById(req.user?req.user.userId:0).select('-password');
-  if (!user) {
-    res.status(404).json({ message: 'User not found' });
-  } else {
-    res.json(user);
-  }
+// app.get('/api/users/profile', authenticateToken(req,res), async (req, res) => {
+//   const user = await User.findById(req.user?req.user.userId:0).select('-password');
+//   if (!user) {
+//     res.status(404).json({ message: 'User not found' });
+//   } else {
+//     res.json(user);
+//   }
   
-});
+// });
 
 // GET route 
 app.get('/api/elements', async (req: Request, res: Response) => {

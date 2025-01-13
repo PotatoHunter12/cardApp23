@@ -21,7 +21,7 @@
           required
         />
       </div>
-      <button type="submit" class="auth-button">Login</button>
+      <button type="submit" class="btn login-button">Login</button>
     </form>
     <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
     <p class="auth-link">
@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from "axios";
 
 export default {
   data() {
@@ -44,10 +44,13 @@ export default {
   methods: {
     async login() {
       try {
-        const response = await axios.post("http://localhost:3000/api/users/login", {
-          username: this.username,
-          password: this.password,
-        });
+        const response = await axios.post(
+          "http://localhost:3000/api/users/login",
+          {
+            username: this.username,
+            password: this.password,
+          }
+        );
         localStorage.setItem("token", response.data.token);
         this.$router.push("/");
       } catch {
@@ -59,67 +62,112 @@ export default {
 </script>
 
 <style scoped>
+/* Main container styling */
 .auth-container {
   max-width: 400px;
   margin: 50px auto;
   padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background-color: #f9f9f9;
-}
-
-.auth-title {
+  background-color: #f4f4f9; /* Matches background */
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   text-align: center;
-  margin-bottom: 20px;
-  font-size: 24px;
+  font-family: "Comic Sans MS", "Comic Sans", cursive;
   color: #333;
 }
 
+/* Title styling */
+.auth-title {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Form layout */
 .auth-form {
   display: flex;
   flex-direction: column;
+  gap: 15px;
+  padding: 0 15px;
 }
-
 .form-group {
-  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-label {
+/* Input fields */
+.form-group label {
   font-weight: bold;
   margin-bottom: 5px;
-  display: block;
+  margin-left: 17px;
+  text-align: left;
+  width: 100%; /* Align label to the input */
 }
 
-input {
+.form-group input {
   padding: 10px;
-  font-size: 14px;
-  width: 100%;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  font-size: 16px;
+  width: 90%; /* Prevent input fields from touching edges */
+  max-width: 360px; /* Keep them consistent in size */
+  border: 2px solid white;
+  border-radius: 8px;
+  background-color: #ffffff;
+  font-family: "Comic Sans MS", "Comic Sans", cursive;
 }
 
-.auth-button {
-  padding: 10px;
-  background-color: #007bff;
-  color: white;
+/* Button styling */
+.btn {
+  padding: 10px 15px;
   border: none;
-  border-radius: 4px;
+  background-color: #ff4757; /* Button color */
+  color: white;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  text-transform: uppercase;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-.auth-button:hover {
-  background-color: #0056b3;
+.btn:hover {
+  background-color: #e33d4f;
+  transform: scale(1.05);
 }
 
+.btn:active {
+  transform: scale(0.95);
+}
+
+/* Specific login button */
+.login-button {
+  font-family: "Comic Sans MS", "Comic Sans", cursive;
+}
+
+/* Error message styling */
 .error-message {
-  color: red;
-  text-align: center;
-  margin-top: 10px;
-}
-
-.auth-link {
-  text-align: center;
   margin-top: 15px;
+  color: #94001b;
+  font-weight: bold;
   font-size: 14px;
 }
+
+/* Link to register */
+.auth-link {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #333;
+}
+
+.auth-link a {
+  color: #ff4757;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.auth-link a:hover {
+  text-decoration: underline;
+}
+
 </style>

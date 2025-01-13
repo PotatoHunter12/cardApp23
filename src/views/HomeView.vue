@@ -1,7 +1,7 @@
 <template>
   <div class="home-container">
     <img src="/deck-of-card.png" alt="Tarok Logo" class="deck-of-cards" />
-    <h1 class="home-title">Card App</h1>
+    <h1 class="home-title">Tarok point counter</h1>
     <div class="button-group">
       <button class="btn btn-primary" @click="navigateToGameSel">Games</button>
       <button class="btn btn-secondary" @click="navigateToProfile">Profile</button>
@@ -36,6 +36,7 @@ export default {
 
 /* Title Styling */
 .home-title {
+  font-family: 'Comic Sans MS', 'Comic Sans', cursive;
   font-size: 3rem;
   font-weight: bold;
   color: #333;
@@ -64,12 +65,12 @@ export default {
 }
 
 .btn-primary {
-  background-color: #007bff;
+  background-color: #ff4757;
   color: #fff;
 }
 
 .btn-primary:hover {
-  background-color: #0056b3;
+  background-color: #e33d4f;
   transform: scale(1.05);
 }
 

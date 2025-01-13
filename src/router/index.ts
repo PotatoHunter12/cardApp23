@@ -30,11 +30,11 @@ const router = createRouter({
       component: () => import('../views/TarokGameView.vue'),
       props: true,
     },
-    {
-      path: '/rules',
-      name: 'tarokRules',
-      component: () => import('../views/TarokRulesView.vue'),
-    },
+    // {
+    //   path: '/rules',
+    //   name: 'tarokRules',
+    //   component: () => import('../views/TarokRulesView.vue'),
+    // },
     {
       path: '/add',
       name: 'AddElement',
@@ -50,19 +50,29 @@ const router = createRouter({
       name: 'register',
       component: Register,
     },
+    {
+      path: '/rules',
+      name: 'PointRules',
+      component: () => import('@/views/PointRules.vue') // Adjust the path as needed
+    },
+    {
+      path: "/example",
+      name: "Example",
+      component: () => import("@/views/Example.vue"),
+    },
   ],
 });
 
 // Navigation guard to check authentication before entering protected routes
-router.beforeEach((to, from, next) => {
-  const token = localStorage.getItem('token'); // Check for a stored token
+// router.beforeEach((to, from, next) => {
+//   const token = localStorage.getItem('token'); // Check for a stored token
 
-  if (to.matched.some((record) => record.meta.requiresAuth) && !token) {
-    // Redirect to login if not authenticated
-    next('/login');
-  } else {
-    next(); // Allow access if authenticated or route is not protected
-  }
-});
+//   if (to.matched.some((record) => record.meta.requiresAuth) && !token) {
+//     // Redirect to login if not authenticated
+//     next('/login');
+//   } else {
+//     next(); // Allow access if authenticated or route is not protected
+//   }
+// });
 
 export default router;
