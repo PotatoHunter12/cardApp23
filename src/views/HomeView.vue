@@ -1,10 +1,10 @@
 <template>
   <div class="home-container">
     <img src="/deck-of-card.png" alt="Tarok Logo" class="deck-of-cards" />
-    <h1 class="home-title">Tarok point counter</h1>
+    <h1 class="home-title">TAROK GAME SAVER</h1>
     <div class="button-group">
-      <button class="btn btn-primary" @click="navigateToGameSel">Games</button>
-      <button class="btn btn-secondary" @click="navigateToProfile">Profile</button>
+      <button class="btn btn-primary" @click="navigateToGameSel">GAMES</button>
+      <button class="btn btn-secondary" @click="navigateToProfile">PROFILE</button>
     </div>
   </div>
 </template>
@@ -30,6 +30,8 @@ export default {
   justify-content: center;
   align-items: center;
   height: 100vh;
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   background-color: #f4f4f9;
   font-family: Arial, sans-serif;
 }

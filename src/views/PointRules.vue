@@ -81,9 +81,9 @@
       <button class="btn" @click="navigateToExample">
       {{ isEnglish ? "View Example" : "Poglej Primer" }}
     </button>
-    <div></div>
-      <button class="btn back-btn" @click="goBack">{{ isEnglish ? "BACK" : "NAZAJ" }}</button>
     </div>
+    <button class="back-btn" @click="goBack">{{ isEnglish ? "BACK" : "NAZAJ" }}</button>
+    
   </template>
   
   <script>
@@ -110,8 +110,10 @@
   <style scoped>
   .rules-container {
   background-color: #f4f4f9;
-  height: 100vh; /* Full viewport height */
+  height: 90vh; /* Full viewport height */
   display: flex;
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   flex-direction: column;
   padding: 20px;
   font-family: 'Comic Sans MS', 'Comic Sans', cursive; /* Apply Comic Sans font */
@@ -153,10 +155,16 @@ th, td {
   background-color: #ff4757;
 }
 .back-btn {
+  background-color: #5a5a5a;
   display: block;
   margin: 30px auto 0 auto;
   width: fit-content;
 }
+.back-btn:hover {
+  background-color: #424242;
+  transform: scale(1.05);
+}
+
 .btn {
   display: inline-block;
   padding: 10px 15px;

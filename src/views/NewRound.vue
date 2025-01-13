@@ -92,10 +92,10 @@
           <strong>Total Points: {{ calculateTotal }}</strong>
         </div>
         <br>
-        <button type="submit" class="btn2">Submit</button>
-        <div class="back">
-          <a @click="{this.$emit('round-submitted');}">Back</a>
-        </div>
+        <button type="submit" class="btn2" @click="$emit('round-submitted')">SUBMIT</button>
+        <button type="button" class="btn2 back-btn" @click="goBack">
+          BACK
+        </button>
         
       </form>
     </div>
@@ -225,6 +225,9 @@
           counter: null,
         };
       },
+      goBack() {
+      this.$router.push({ name: 'gameSelect' }); // Redirect to the home page
+    },
     },
   };
   </script>
@@ -232,6 +235,8 @@
   <style scoped>
   .tarok-round {
     max-width: 500px;
+    background-color: #ff4757;
+    color: white;
     margin: auto;
   }
   h1 {
@@ -244,6 +249,7 @@
 
   .btn2{
     margin-bottom: 5pt;
+    border-radius: 8px;
   }
   </style>
   

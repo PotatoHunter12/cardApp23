@@ -21,9 +21,10 @@
         </button>
         <button class="btn save-btn" type="submit">Save</button>
       </div>
-      <button class="btn back-btn" @click="back">Back</button>
-    </form>
+      </form>
   </div>
+  <button class="btn back-btn" @click="back">Back</button>
+    
 </template>
 
 <script>
@@ -81,12 +82,14 @@ export default {
 /* Container for the entire form */
 .add-element-container {
   background-color: #f4f4f9;
-  height: 100vh; /* Full viewport height */
+  height: 50vh; /* Full viewport height */
   padding: 20px;
   display: flex;
   flex-direction: column;
   font-family: 'Comic Sans MS', 'Comic Sans', cursive; /* Comic Sans font */
   text-align: center;
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   color: #333;
 }
 
@@ -171,13 +174,13 @@ export default {
 }
 
 .back-btn {
-  background-color: #ff4757;
+  background-color: #5a5a5a;
   display: block;
   margin: 30px auto 0 auto;
   width: fit-content;
 }
-
 .back-btn:hover {
-  background-color: #e33d4f;
+  background-color: #424242;
+  transform: scale(1.05);
 }
 </style>

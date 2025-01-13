@@ -27,7 +27,11 @@
     <p class="auth-link">
       Don't have an account? <router-link to="/register">Register here</router-link>
     </p>
+    
   </div>
+  <button type="button" class="btn2 back-btn" @click="goBack">
+          BACK
+  </button>
 </template>
 
 <script>
@@ -56,6 +60,9 @@ export default {
       } catch {
         this.errorMessage = "Invalid username or password.";
       }
+    },
+    goBack() {
+      this.$router.push({ name: 'home' }); // Redirect to the home page
     },
   },
 };

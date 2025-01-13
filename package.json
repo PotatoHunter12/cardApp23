@@ -38,7 +38,7 @@
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "@types/jsonwebtoken": "^9.0.7",
-    "@types/node": "^18.17.17",
+    "@types/node": "^18.19.70",
     "@vitejs/plugin-vue": "^4.3.4",
     "@vue/tsconfig": "^0.4.0",
     "npm-run-all2": "^6.0.6",

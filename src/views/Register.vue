@@ -28,6 +28,9 @@
       Already have an account? <router-link to="/login">Login here</router-link>
     </p>
   </div>
+  <button type="button" class="btn2 back-btn" @click="goBack">
+          BACK
+  </button>
 </template>
 
 <script>
@@ -57,6 +60,9 @@ export default {
         this.errorMessage =
           error.response?.data?.message || "An error occurred. Please try again.";
       }
+    },
+    goBack() {
+      this.$router.push({ name: 'home' }); // Redirect to the home page
     },
   },
 };

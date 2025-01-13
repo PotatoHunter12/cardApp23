@@ -91,8 +91,9 @@
     <p class="example-text">
       {{ isEnglish ? exampleText.detailsEnglish : exampleText.detailsSlovene }}
     </p>
+    </div>
     <button class="btn back-btn" @click="goBack">{{ isEnglish ? "BACK" : "NAZAJ" }}</button>
-  </div>
+  
 </template>
 
 <script>
@@ -152,7 +153,9 @@ Kot že opisano, se igra tradicionalno zaključi s škis krogom. Ko je odigrana 
 <style scoped>
 .example-container {
   background-color: #f4f4f9;
-  height: 140vh;
+  height: 130vh;
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -219,9 +222,13 @@ td {
 }
 
 .back-btn {
-  background-color: #ff4757;
+  background-color: #5a5a5a;
   display: block;
   margin: 30px auto 0 auto;
   width: fit-content;
+}
+.back-btn:hover {
+  background-color: #424242;
+  transform: scale(1.05);
 }
 </style>
