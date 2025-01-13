@@ -4,7 +4,7 @@ import axios from 'axios';
 export default {
   data() {
     return {
-      profiles: [],
+      profile: [],
       newProfileName: '',
       errorMessage: '',
     };
@@ -22,12 +22,16 @@ export default {
     async fetchProfiles() {
       try {
         const token = localStorage.getItem('token');
+        console.log(token);
+        
         const response = await axios.get('http://localhost:3000/api/users/profiles', {
           headers: {
             Authorization: token,
           },
         });
         this.profile = response.data;
+        console.log(this.profile);
+        
       } catch (error) {
         this.errorMessage = error.response?.data?.message || 'Failed to fetch profile.';
       }
@@ -74,22 +78,16 @@ export default {
 
 <template>
     <div>
-      <h1>Your Profiles</h1>
+      <h1>{{ this.profile.username }}</h1>
   
       <!-- Show error message if there's an error -->
       <p v-if="errorMessage" style="color: red;">{{ errorMessage }}</p>
   
       <!-- Show profiles if they are fetched -->
-      <ul v-if="profiles.length > 0">
-        <li v-for="profile in profiles" :key="profile.id">
-          {{ profile.name }}
-          <button @click="deleteProfile(profile.id)">Delete</button>
-        </li>
-      </ul>
-  
-      <!-- Fallback message when no profiles are available -->
-      <p v-else>No profiles found. Add a new profile below:</p>
-  
+      <div>
+        {{ this.profile.username }}
+      </div>
+
       <!-- Input to add a new profile -->
       <div>
         <input v-model="newProfileName" placeholder="Enter profile name" />
