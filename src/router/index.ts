@@ -37,8 +37,8 @@ const router = createRouter({
     // },
     {
       path: '/add',
-      name: 'AddElement',
-      component: () => import('../views/AddElement.vue'),
+      name: 'AddGame',
+      component: () => import('../views/NewGame.vue'),
     },
     {
       path: '/login',

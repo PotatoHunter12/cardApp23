@@ -1,22 +1,40 @@
 <script>
 import NewRound from '../components/NewRound.vue';
+import axios from "axios";
 
 export default {
   data() {
     return {
       showNewRound: false,
-      items: [], // Initialize players/items
-      rounds: [], // Tracks rounds with points
+      players: [], 
+      gameId: this.$route.query.gameId,
+      rounds: [],
     };
   },
   created() {
-    const items = this.$route.query.items;
-    if (items) {
-      this.items = JSON.parse(items); // Parse the JSON string
-      console.log(this.items);
-    }
+    this.fetchPlayers();
+    
   },
   methods: {
+    async fetchPlayers() {
+      try {
+        console.log("fetching players ...");
+        
+        const response = await axios.get(`http://localhost:3000/api/games/find`,{
+          params: { id: this.gameId }
+        });
+        
+
+
+        const game = response.data;
+        this.players = game.players; // Assuming the players are stored in the 'players' field
+        console.log("response", this.players);
+      } catch (error) {
+        console.log("Error fetching players:", error);
+        
+        this.errorMessage = error.response?.data?.message || 'Failed to fetch players.';
+      }
+    },
     toggleNewRound() {
       this.showNewRound = !this.showNewRound;
     },
@@ -42,7 +60,7 @@ export default {
     <!-- Header with Add Round Button and Title -->
     <div class="header">
       <h1 class="game-title">My Game</h1>
-      <button class="btn add-round-btn" @click="toggleNewRound">Add Round</button>
+      <button class="btn add-round-btn" @click="toggleNewRound">New Round</button>
     </div>
 
     <!-- Points Table -->
@@ -50,7 +68,7 @@ export default {
       <thead>
         <tr>
           <th>Players</th>
-          <th v-for="item in items" :key="item.name">
+          <th v-for="item in players" :key="item.name">
             {{ item.name }}
           </th>
         </tr>
@@ -59,7 +77,7 @@ export default {
         <!-- Radli Row -->
         <tr>
           <td>Radli</td>
-          <td v-for="item in items" :key="item.name">
+          <td v-for="item in players" :key="item.name">
             xoo
           </td>
         </tr>
@@ -76,8 +94,8 @@ export default {
         <!-- Totals -->
         <tr class="totals-row">
           <td>Totals</td>
-          <td v-for="item in items" :key="item.name">
-            {{ rounds.reduce((sum, round) => sum + (round[items.indexOf(item)] || 0), 0) }}
+          <td v-for="item in players" :key="item.name">
+            {{ rounds.reduce((sum, round) => sum + (round[players.indexOf(item)] || 0), 0) }}
           </td>
         </tr>
       </tbody>
@@ -87,7 +105,7 @@ export default {
     <NewRound
       v-if="showNewRound"
       @round-submitted="addRound"
-      :players="items"
+      :players="players"
       class="nrnd"
     ></NewRound>
 

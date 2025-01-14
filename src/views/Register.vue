@@ -12,6 +12,15 @@
         />
       </div>
       <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          id="email"
+          v-model="email"
+          placeholder="Enter email"
+          required
+        />
+      </div>
+      <div class="form-group">
         <label for="password">Password</label>
         <input
           id="password"
@@ -40,6 +49,7 @@ export default {
   data() {
     return {
       username: "",
+      email: "",
       password: "",
       errorMessage: "",
     };
@@ -53,6 +63,7 @@ export default {
       try {
         await axios.post("http://localhost:3000/api/users/register", {
           username: this.username,
+          email: this.email,
           password: this.password,
         });
         this.$router.push("/login");

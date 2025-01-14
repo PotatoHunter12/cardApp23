@@ -3,9 +3,9 @@
     <h1 class="games-title">Games</h1>
     <div class="grid-container">
       <div class="grid">
-        <div class="card" @click="openGame(element)" v-for="element in elements" :key="element._id">
-          <div class="names" v-for="item in element.items" :key="item.name">
-            <p>{{ item.name }}</p>
+        <div class="card" @click="openGame(game)" v-for="game in games" :key="game._id">
+          <div class="names" v-for="player in game.players" :key="player.name">
+            <p>{{ player.name }}</p>
           </div>
         </div>
       </div>
@@ -24,7 +24,7 @@ import axios from "axios";
 export default {
   data() {
     return {
-      elements: [],
+      games: [],
     };
   },
   created() {
@@ -33,14 +33,16 @@ export default {
   methods: {
     async fetchElements() {
       try {
-        const response = await axios.get("http://localhost:3000/api/elements");
-        this.elements = response.data;
+        const response = await axios.get("http://localhost:3000/api/games/get");
+        this.games = response.data;
+        
+        
       } catch (error) {
         console.error("Error fetching elements:", error);
       }
     },
     navigateToAdd() {
-      this.$router.push({ name: "AddElement" });
+      this.$router.push({ name: "AddGame" });
     },
     navigateToRules() {
       this.$router.push({ name: "PointRules" });
@@ -48,9 +50,9 @@ export default {
     back() {
       this.$router.push({ name: "home" });
     },
-    openGame(element) {
-      const items = JSON.stringify(element.items);
-      this.$router.push({ name: "gameTable", query: { items } });
+    openGame(game) {
+      const id = game._id;
+      this.$router.push({ name: "gameTable", query: { gameId: id } });
     },
   },
 };
