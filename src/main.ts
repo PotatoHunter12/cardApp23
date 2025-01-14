@@ -10,3 +10,10 @@ const app = createApp(App)
 app.use(router)
 app.config.compilerOptions.whitespace = "preserve"
 app.mount('#app')
+
+export default {
+    build: {
+      outDir: 'www', // Output to Cordova's www folder
+    },
+  };
+  

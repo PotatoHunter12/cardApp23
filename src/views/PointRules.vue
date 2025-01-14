@@ -82,7 +82,7 @@
       {{ isEnglish ? "View Example" : "Poglej Primer" }}
     </button>
     </div>
-    <button class="back-btn" @click="goBack">{{ isEnglish ? "BACK" : "NAZAJ" }}</button>
+    <button class="btn back-btn" @click="goBack">{{ isEnglish ? "BACK" : "NAZAJ" }}</button>
     
   </template>
   
@@ -183,6 +183,16 @@ th, td {
 .btn:hover {
   background-color: #e33d4f; /* Slightly darker hover color */
   transform: scale(1.05); /* Slight zoom effect on hover */
+}
+.back-btn {
+  background-color: #5a5a5a;
+  display: block;
+  margin: 30px auto 0 auto;
+  width: fit-content;
+}
+.back-btn:hover {
+  background-color: #424242;
+  transform: scale(1.05);
 }
 
 
