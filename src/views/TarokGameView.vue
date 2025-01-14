@@ -1,5 +1,5 @@
 <script>
-import NewRound from './NewRound.vue';
+import NewRound from '../components/NewRound.vue';
 
 export default {
   data() {

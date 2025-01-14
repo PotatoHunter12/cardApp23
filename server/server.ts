@@ -4,9 +4,6 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import path from 'path';
 import Element from './models/Element';
-import connectToDatabase from './models/db.config';
-import Profile from './models/profile.model';
-import authRoutes from './routes/auth.routes';
 import Game from './models/Games';
 import User from './models/user.model';
 import bcrypt from 'bcrypt';
@@ -31,9 +28,6 @@ mongoose.connect(mongoUri)
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'dist')));
-
-// Routes
-app.use('/api', authRoutes);
 
 // POST route
 app.post('/api/elements', async (req, res) => {
