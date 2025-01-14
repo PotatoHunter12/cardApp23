@@ -29,7 +29,7 @@
     </p>
     
   </div>
-  <button type="button" class="btn2 back-btn" @click="goBack">
+  <button type="button" class="btn back-btn" @click="goBack">
           BACK
   </button>
 </template>
@@ -175,6 +175,16 @@ export default {
 
 .auth-link a:hover {
   text-decoration: underline;
+}
+.back-btn {
+  background-color: #5a5a5a;
+  display: block;
+  margin: 30px auto 0 auto;
+  width: fit-content;
+}
+.back-btn:hover {
+  background-color: #424242;
+  transform: scale(1.05);
 }
 
 </style>
