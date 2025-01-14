@@ -2,10 +2,10 @@
   <div class="add-element-container">
     <h1>Start New Game</h1>
     <form class="add-element-form" @submit.prevent="submitElement">
-      <div v-for="i in this.playerNum" :key="i" class="player-input">
-        <label>Player {{ i }}:</label>
-        <select id="player" required>
-            <option v-for="player in this.players" :key="player.username">
+      <div v-for="item,index in this.items" :key="index" class="player-input">
+        <label>Player {{ index }}:</label>
+        <select id="player" v-model="item.name" required>
+            <option v-for="player in this.playerList" :key="player.username">
               {{ player.username }}
             </option>
           </select>
@@ -37,7 +37,7 @@ export default {
         { name: "", value: 0 },
         { name: "", value: 0 },
       ],
-      players: [],
+      playerList: [],
       playerNum: 3,
     };
   },
@@ -54,8 +54,8 @@ export default {
     async fetchUsers() {
       try {
         const response = await axios.get('http://localhost:3000/api/users/get');
-        this.players = response.data;
-        console.log(this.players);
+        this.playerList = response.data;
+        console.log(this.playerList);
         
       } catch (error) {
         this.errorMessage = error.response?.data?.message || 'Failed to fetch users.';
@@ -63,11 +63,13 @@ export default {
     },
     async submitElement() {
       try {
-        await axios.post("http://localhost:3000/api/elements", {
-          items: this.items,
+        await axios.post("http://localhost:3000/api/games", {
+          players: this.items,
         });
         this.$router.push({ name: "home" }); // Navigate back to the grid view
       } catch (error) {
+        console.log(this.items);
+        
         console.error("Error saving element:", error);
       }
     },
