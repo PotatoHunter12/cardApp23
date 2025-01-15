@@ -27,6 +27,7 @@
     "nginx": "^1.0.8",
     "pg": "^8.13.1",
     "sequelize": "^6.37.5",
+    "swagger-ui-dist": "^5.18.2",
     "ts-node": "^10.9.2",
     "vue": "^3.3.6",
     "vue-router": "^4.2.5"

@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue';
 import Login from '@/views/Login.vue';
 import Register from '@/views/Register.vue';
 import ProfileView from '@/views/ProfileView.vue';
+import SwaggerUIPage from "@/views/SwaggerUIPage.vue";
 
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
@@ -60,6 +61,11 @@ const router = createRouter({
       name: "Example",
       component: () => import("@/views/Example.vue"),
     },
+    {path: "/api-docs",
+    name: "SwaggerUI",
+    component: SwaggerUIPage,
+    }
+    
   ],
 });
 
