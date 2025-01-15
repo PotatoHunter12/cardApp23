@@ -29,3 +29,7 @@ Izdelava api
 
 ## Slika Podatkovnega modela
 ![alt text](https://github.com/PotatoHunter12/cardApp23/blob/main/Screenshots/screenshot_baze.png?raw=true)
+
+## Linki
+https:// spletnastran /api-docs --> api dokumentacija
+
