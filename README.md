@@ -7,7 +7,7 @@
 ## Posnetki Zaslona aplikacije:
 ### Mobilna aplikacija
 ![alt text](https://github.com/niny8888/TarokAppMobile/blob/main/screenshots/screenshot_Login.png?raw=true)
-![alt text]([https://github.com/[username]/[reponame]/blob/[branch]/image.jpg](https://github.com/niny8888/TarokAppMobile/blob/main/screenshots/screenshot_Rules.png)?raw=true)
+![alt text](https://github.com/niny8888/TarokAppMobile/blob/main/screenshots/screenshot_Rules.png?raw=true)
 
 ### Web
 
