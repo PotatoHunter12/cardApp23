@@ -10,6 +10,8 @@
 ![alt text](https://github.com/niny8888/TarokAppMobile/blob/main/screenshots/screenshot_Rules.png?raw=true)
 
 ### Web
+![alt text](https://github.com/PotatoHunter12/cardApp23/blob/main/Screenshots/screenshot_example.png?raw=true)
+![alt text](https://github.com/PotatoHunter12/cardApp23/blob/main/Screenshots/screenshot_home.png?raw=true)
 
 ## Funkcionalnosti
 Aplikacija podpira registracijo in login. Ob uspešni prijavi si uporabnik lahko ogleda svoj profil.
