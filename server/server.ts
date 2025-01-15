@@ -10,6 +10,7 @@ import Game from './models/game.model';
 import User from './models/user.model';
 import Profile from './models/profile.model';
 import { Rule, populateInitialData } from './models/gamerule.model';
+import { log } from 'console';
 
 
 const app: Application = express();
@@ -80,6 +81,36 @@ app.get('/api/games/find', async (req, res) => {
     console.log('Game fetched successfully');  
   } catch (error) {
     res.status(500).json({ message: 'Failed to fetch games', error });
+  }
+});
+
+app.post('/api/games/update', async (req, res) => {
+  const { gameId, player, partner, value } = req.body;
+
+  try {
+    const game = await Game.findById(gameId);
+    console.log(gameId);
+    if (!game) {
+      res.status(404).json({ message: 'Game not found' });
+    } else {
+      game.players.forEach(p => {
+        console.log(p);
+        
+        if (p.name === player || p.name === partner) {
+          p.value += value;
+          console.log(p.name, p.value);
+          
+        }
+      });
+  
+      await game.save();
+      res.json({ message: 'Game updated successfully' });
+      console.log('Game updated successfully');
+
+    }
+    
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to update game', error });
   }
 });
 

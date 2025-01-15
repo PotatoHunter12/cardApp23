@@ -41,6 +41,7 @@ export default {
     addRound(newRound) {
       this.rounds.push(newRound); // Add new round points
       this.showNewRound = false; // Hide the new round form
+      this.fetchPlayers();
     },
     goBack() {
       this.$router.push({ name: 'gameSelect' }); // Redirect to the home page
@@ -82,20 +83,11 @@ export default {
           </td>
         </tr>
 
-        <!-- Rounds -->
-        <tr v-for="(round, index) in rounds" :key="index">
-          <td>{{ index + 1 }}</td>
-          <td></td>
-          <td v-for="points in round" :key="points">
-            {{ points || '-' }}
-          </td>
-        </tr>
-
         <!-- Totals -->
         <tr class="totals-row">
           <td>Totals</td>
           <td v-for="item in players" :key="item.name">
-            {{ rounds.reduce((sum, round) => sum + (round[players.indexOf(item)] || 0), 0) }}
+            {{ item.value }}
           </td>
         </tr>
       </tbody>
@@ -106,6 +98,7 @@ export default {
       v-if="showNewRound"
       @round-submitted="addRound"
       :players="players"
+      :id="gameId"
       class="nrnd"
     ></NewRound>
 

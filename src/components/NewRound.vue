@@ -92,8 +92,8 @@
           <strong>Total Points: {{ calculateTotal }}</strong>
         </div>
         <br>
-        <button type="submit" class="btn2" @click="$emit('round-submitted')">SUBMIT</button>
-        <button type="button" class="btn2 back-btn" @click="goBack">
+        <button type="submit" class="btn2" @submit="$emit('round-submitted')">SUBMIT</button>
+        <button type="button" class="btn2 back-btn" @click="{this.$emit('round-submitted');}">
           BACK
         </button>
         
@@ -110,11 +110,16 @@
         type: Array,
         required: true,
       },
+      id: {
+        type: String,
+        required: true,
+      },
     },
     data() {
       return {
         players: this.players,
         games: [],
+        total: 0,
         bonusOptions: [
           { id: 1, name: "Kings", points: 10 },
           { id: 2, name: "Threesome", points: 10 },
@@ -154,7 +159,8 @@
         const bonusTotal = this.round.bonuses.reduce((sum, val) => sum + val.points, 0);
         const deductionTotal = this.round.deductions.reduce((sum, val) => sum + val.points, 0);
         const base = this.round.game.points * (isWin ? 1 : -1) + (this.round.game.diff ? this.round.points - 35 : 0);
-        return base * (!isWin ? this.round.counter.loss : 1) + bonusTotal + deductionTotal;
+        this.total = base * (!isWin ? this.round.counter.loss : 1) + bonusTotal + deductionTotal;
+        return this.total;
       },
     },
     methods: {
@@ -178,18 +184,14 @@
      },
      
       async submitRound() {
-        const roundData = {
-          points: this.round.points,
-          game: this.round.game,
-          player: this.round.player,
-          partner: this.round.partner,
-          bonuses: this.round.bonuses,
-          deductions: this.round.deductions,
-          counter: this.round.counter,
-          totalPoints: this.calculateTotal,
-        };
         try {
-          // await axios.post("/api/tarok/rounds", roundData);
+          const roundData = {
+            gameId: this.id,
+            player: this.round.player,
+            partner: this.round.partner,
+            value: this.total
+          };
+          await axios.post("http://localhost:3000/api/games/update", roundData);
           this.$emit('round-submitted');
           alert("Round submitted successfully!");
           this.resetForm();
