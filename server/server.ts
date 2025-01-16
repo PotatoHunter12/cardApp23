@@ -1,10 +1,10 @@
 import express from 'express';
 import type { Request, Response, Application, NextFunction } from 'express';
 import mongoose from 'mongoose';
-import cors from 'cors';
 import path from 'path';
 import bcrypt from 'bcrypt';
 import jwt, { type JwtPayload } from 'jsonwebtoken';
+import cors from 'cors';
 
 import Game from './models/game.model';
 import User from './models/user.model';
@@ -21,6 +21,13 @@ const asyncHandler = (fn: (req: Request, res: Response, next: express.NextFuncti
     Promise.resolve(fn(req, res, next)).catch(next);
   };
 
+  app.options('*', cors({
+    origin: 'http://tileng.si:5173',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
+  }));
+
 
 // MongoDB connection
 const mongoUri = 'mongodb://mongo:27017/games';
@@ -32,7 +39,6 @@ mongoose.connect(mongoUri)
   .catch(err => console.error('Could not connect to MongoDB:', err));
 
 // Middleware
-app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'dist')));
 
@@ -184,6 +190,27 @@ app.get('/api/profiles', async (req, res) => {
   }
 });
 
+app.put('/api/profiles/nickname', async (req, res) => {
+  const { userId, newNickname } = req.body;
+
+  try {
+    const profile = await Profile.findOneAndUpdate(
+      { user: userId },
+      { nickname: newNickname },
+      { new: true }
+    );
+
+    if (!profile) {
+       res.status(404).json({ message: 'Profile not found' });
+    }
+
+    res.json({ message: 'Nickname updated successfully', profile });
+    console.log('Nickname updated successfully');
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to update nickname', error });
+  }
+});
+
 app.get('/api/users/profiles', async (req, res) => {
   const token = req.headers['authorization'] || "";
   const decoded = jwt.verify(token, JWT_SECRET) as JwtPayload;
@@ -225,6 +252,12 @@ app.listen(port, () => {
 
 // Error handling middleware
 app.use((err: Error, req: Request, res: Response, next: express.NextFunction) => {
+  res.header('Access-Control-Allow-Origin', 'http://tileng.si:5173');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  next();
+
   console.error(err.stack);
   res.status(500).json({ message: 'Something went wrong!', error: err.message });
 });
